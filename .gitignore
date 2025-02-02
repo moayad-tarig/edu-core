@@ -4,7 +4,7 @@
 /public/hot
 /public/uploads
 /public/default-files
-/public/frontend/assets/images/
+/public/frontend/assets/images/**
 /public/storage/
 /storage/*.key
 /storage/pail
