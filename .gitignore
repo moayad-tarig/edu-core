@@ -4,12 +4,12 @@
 /public/hot
 /public/uploads
 /public/default-files
-/public/frontend/assets/images
-/public/storage
+/public/frontend/assets/images/
+/public/storage/
 /storage/*.key
 /storage/pail
-/resources/views/edu-core-frontend
-/resources/views/template
+/resources/views/edu-core-frontend/
+/resources/views/template/
 /vendor
 .env
 .env.backup
