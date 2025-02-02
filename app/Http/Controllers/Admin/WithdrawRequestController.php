@@ -10,33 +10,34 @@ use Illuminate\Http\Request;
 
 class WithdrawRequestController extends Controller
 {
-
-    function index() : View
+    public function index(): View
     {
         $withdraws = Withdraw::with('instructor')->paginate(25);
+
         return view('admin.withdraw-request.index', compact('withdraws'));
     }
 
-    function show(Withdraw $withdraw) : View {
+    public function show(Withdraw $withdraw): View
+    {
 
-        return view('admin.withdraw-request.show', compact('withdraw')); 
+        return view('admin.withdraw-request.show', compact('withdraw'));
     }
 
-    function updateStatus(Request $request,Withdraw $withdraw) : RedirectResponse {
-       $request->validate([
-        'status' => 'required|in:pending,approved,rejected'
-       ]);
+    public function updateStatus(Request $request, Withdraw $withdraw): RedirectResponse
+    {
+        $request->validate([
+            'status' => 'required|in:pending,approved,rejected',
+        ]);
 
-       $withdraw->status = $request->status;
-       if($request->status == 'approved') {
-           $withdraw->instructor->wallet = ($withdraw->instructor->wallet - $withdraw->amount);
-           $withdraw->instructor->save();
+        $withdraw->status = $request->status;
+        if ($request->status == 'approved') {
+            $withdraw->instructor->wallet = ($withdraw->instructor->wallet - $withdraw->amount);
+            $withdraw->instructor->save();
         }
-       $withdraw->save();
+        $withdraw->save();
 
+        notyf()->success('Updated Successfully!');
 
-       notyf()->success("Updated Successfully!");
-       return redirect()->route('admin.withdraw-request.index');
+        return redirect()->route('admin.withdraw-request.index');
     }
-    
 }

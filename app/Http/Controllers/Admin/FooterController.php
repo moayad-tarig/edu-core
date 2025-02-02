@@ -14,6 +14,7 @@ class FooterController extends Controller
     public function index()
     {
         $footer = Footer::first();
+
         return view('admin.footer.index', compact('footer'));
     }
 
@@ -38,8 +39,6 @@ class FooterController extends Controller
             'address' => ['nullable', 'string', 'max:255'],
         ]);
 
-   
-        
         Footer::updateOrCreate(
             ['id' => 1],
             $validateData

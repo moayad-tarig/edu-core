@@ -20,13 +20,14 @@ class SocialLinkController extends Controller
     public function index(): View
     {
         $socialLinks = SocialLink::all();
+
         return view('admin.social-link.index', compact('socialLinks'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() : View
+    public function create(): View
     {
         return view('admin.social-link.create');
     }
@@ -34,7 +35,7 @@ class SocialLinkController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) : RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'icon' => ['required', 'image', 'max:3000'],
@@ -42,23 +43,23 @@ class SocialLinkController extends Controller
             'status' => ['nullable', 'boolean'],
         ]);
 
-        $icon = $this->uploadFile($request->file('icon'));        
+        $icon = $this->uploadFile($request->file('icon'));
 
-        $social = new SocialLink();
+        $social = new SocialLink;
         $social->icon = $icon;
         $social->url = $request->url;
         $social->status = $request->status ?? 0;
         $social->save();
 
-        notyf()->success("Created Successfully!");
+        notyf()->success('Created Successfully!');
 
-        return to_route('admin.social-links.index'); 
+        return to_route('admin.social-links.index');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SocialLink $social_link) : View
+    public function edit(SocialLink $social_link): View
     {
         return view('admin.social-link.edit', compact('social_link'));
     }
@@ -74,20 +75,19 @@ class SocialLinkController extends Controller
             'status' => ['nullable', 'boolean'],
         ]);
 
-
         $social = SocialLink::findOrFail($id);
-        if($request->hasFile('icon')) {
-            $icon = $this->uploadFile($request->file('icon')); 
-            $this->deleteFile($request->old_icon); 
+        if ($request->hasFile('icon')) {
+            $icon = $this->uploadFile($request->file('icon'));
+            $this->deleteFile($request->old_icon);
             $social->icon = $icon;
         }
         $social->url = $request->url;
         $social->status = $request->status ?? 0;
         $social->save();
 
-        notyf()->success("Created Successfully!");
+        notyf()->success('Created Successfully!');
 
-        return to_route('admin.social-links.index'); 
+        return to_route('admin.social-links.index');
     }
 
     /**
@@ -99,9 +99,11 @@ class SocialLinkController extends Controller
             $this->deleteFile($social_link->icon);
             $social_link->delete();
             notyf()->success('Deleted Successfully!');
+
             return response(['message' => 'Deleted Successfully!'], 200);
-        }catch(Exception $e) {
-            logger("Social Link Error >> ".$e);
+        } catch (Exception $e) {
+            logger('Social Link Error >> '.$e);
+
             return response(['message' => 'Something went wrong!'], 500);
         }
     }

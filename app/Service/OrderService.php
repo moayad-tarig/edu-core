@@ -9,8 +9,7 @@ use App\Models\OrderItem;
 
 class OrderService
 {
-
-    static function storeOrder(
+    public static function storeOrder(
         string $transaction_id,
         int $buyer_id,
         string $status,
@@ -20,7 +19,7 @@ class OrderService
         string $payment_method,
     ) {
         try {
-            $order = new Order();
+            $order = new Order;
             $order->invoice_id = uniqid();
             $order->buyer_id = $buyer_id;
             $order->status = $status;
@@ -35,7 +34,7 @@ class OrderService
             $cart = Cart::where('user_id', $buyer_id);
             $cartItems = $cart->get();
             foreach ($cartItems as $item) {
-                $orderItem = new OrderItem();
+                $orderItem = new OrderItem;
                 $orderItem->order_id = $order->id;
                 $orderItem->price = $item->course->discount > 0 ? $item->course->discount : $item->course->price;
                 $orderItem->course_id = $item->course->id;
@@ -43,20 +42,18 @@ class OrderService
                 $orderItem->save();
 
                 /** store enrollment */
-                $enrollment = new Enrollment();
+                $enrollment = new Enrollment;
                 $enrollment->user_id = $buyer_id;
                 $enrollment->course_id = $item->course->id;
                 $enrollment->instructor_id = $item->course->instructor_id;
                 $enrollment->save();
 
-                  /** add commission to instructor wallet */
-                  $instructorWallet = $item->course->instructor;
-                  $instructorWallet->wallet += calculateCommission($item->course->discount > 0 ? $item->course->discount : $item->course->price, config('settings.commission_rate'));
-                  $instructorWallet->save();
+                /** add commission to instructor wallet */
+                $instructorWallet = $item->course->instructor;
+                $instructorWallet->wallet += calculateCommission($item->course->discount > 0 ? $item->course->discount : $item->course->price, config('settings.commission_rate'));
+                $instructorWallet->save();
 
-         
             }
-
 
             /** delete cart items */
             $cart->delete();

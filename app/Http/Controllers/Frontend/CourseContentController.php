@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\CourseChapter;
 use App\Models\CourseChapterLession;
 use Exception;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -14,19 +13,19 @@ use Illuminate\Support\Facades\Auth;
 
 class CourseContentController extends Controller
 {
-    function createChapterModal(string $id): String
+    public function createChapterModal(string $id): string
     {
         return view('frontend.instructor-dashboard.course.partials.course-chapter-modal', compact('id'))->render();
     }
 
-    function storeChapter(Request $request, string $courseId): RedirectResponse
+    public function storeChapter(Request $request, string $courseId): RedirectResponse
     {
 
         $request->validate([
             'title' => ['required', 'max:255'],
         ]);
 
-        $chapter = new CourseChapter();
+        $chapter = new CourseChapter;
         $chapter->title = $request->title;
         $chapter->course_id = $courseId;
         $chapter->instructor_id = Auth::user()->id;
@@ -36,14 +35,15 @@ class CourseContentController extends Controller
         return redirect()->back();
     }
 
-    function createLesson(Request $request): String
+    public function createLesson(Request $request): string
     {
         $courseId = $request->course_id;
         $chapterId = $request->chapter_id;
+
         return view('frontend.instructor-dashboard.course.partials.chapter-lesson-modal', compact('courseId', 'chapterId'))->render();
     }
 
-    function storeLesson(Request $request): RedirectResponse
+    public function storeLesson(Request $request): RedirectResponse
     {
         $rules = [
             'title' => ['required', 'string', 'max:255'],
@@ -52,7 +52,7 @@ class CourseContentController extends Controller
             'duration' => ['required'],
             'is_preview' => ['nullable', 'boolean'],
             'downloadable' => ['nullable', 'boolean'],
-            'description' => ['required']
+            'description' => ['required'],
         ];
         if ($request->filled('file')) {
             $rules['file'] = ['required'];
@@ -61,7 +61,7 @@ class CourseContentController extends Controller
         }
         $request->validate($rules);
 
-        $lesson = new CourseChapterLession();
+        $lesson = new CourseChapterLession;
         $lesson->title = $request->title;
         $lesson->slug = \Str::slug($request->title);
         $lesson->storage = $request->source;
@@ -82,17 +82,15 @@ class CourseContentController extends Controller
         return redirect()->back();
     }
 
-    function editChapterModal(string $id): String
+    public function editChapterModal(string $id): string
     {
         $editMode = true;
         $chapter = CourseChapter::where(['id' => $id, 'instructor_id' => Auth::user()->id])->firstOrFail();
 
-
-
         return view('frontend.instructor-dashboard.course.partials.course-chapter-modal', compact('chapter', 'editMode'))->render();
     }
 
-    function updateChapterModal(Request $request, string $id): RedirectResponse
+    public function updateChapterModal(Request $request, string $id): RedirectResponse
     {
         $request->validate([
             'title' => ['required', 'max:255'],
@@ -102,24 +100,27 @@ class CourseContentController extends Controller
         $chapter->title = $request->title;
         $chapter->save();
         notyf()->success('Updated Susccessfully!');
+
         return redirect()->back();
     }
 
-    function destroyChapter(string $id): Response
+    public function destroyChapter(string $id): Response
     {
         try {
             // delete chapter
             $chapter = CourseChapter::findOrFail($id);
             $chapter->delete();
             notyf()->success('Deleted Successfully!');
+
             return response(['message' => 'Deleted Successfully!'], 200);
         } catch (Exception $e) {
-            logger("Course Level Error >> " . $e);
+            logger('Course Level Error >> '.$e);
+
             return response(['message' => 'Something went wrong!'], 500);
         }
     }
 
-    function editLesson(Request $request): String
+    public function editLesson(Request $request): string
     {
 
         $editMode = true;
@@ -131,16 +132,17 @@ class CourseContentController extends Controller
                 'id' => $lessonId,
                 'chapter_id' => $chapterId,
                 'course_id' => $courseId,
-                'instructor_id' => Auth::user()->id
+                'instructor_id' => Auth::user()->id,
             ]
         )->first();
+
         return view(
             'frontend.instructor-dashboard.course.partials.chapter-lesson-modal',
             compact('courseId', 'chapterId', 'lesson', 'editMode')
         )->render();
     }
 
-    function updateLesson(Request $request, string $id): RedirectResponse
+    public function updateLesson(Request $request, string $id): RedirectResponse
     {
         $rules = [
             'title' => ['required', 'string', 'max:255'],
@@ -149,7 +151,7 @@ class CourseContentController extends Controller
             'duration' => ['required'],
             'is_preview' => ['nullable', 'boolean'],
             'downloadable' => ['nullable', 'boolean'],
-            'description' => ['required']
+            'description' => ['required'],
         ];
         if ($request->filled('file')) {
             $rules['file'] = ['required'];
@@ -178,24 +180,26 @@ class CourseContentController extends Controller
         return redirect()->back();
     }
 
-    function destroyLesson(string $id): Response
+    public function destroyLesson(string $id): Response
     {
         try {
-            $lesson =  CourseChapterLession::findOrFail($id);
+            $lesson = CourseChapterLession::findOrFail($id);
             $lesson->delete();
             notyf()->success('Deleted Successfully!');
+
             return response(['message' => 'Deleted Successfully!'], 200);
         } catch (Exception $e) {
-            logger("Course Level Error >> " . $e);
+            logger('Course Level Error >> '.$e);
+
             return response(['message' => 'Something went wrong!'], 500);
         }
     }
 
-
     /** Sort chapter lessons */
-    function sortLesson(Request $request, string $id) {
+    public function sortLesson(Request $request, string $id)
+    {
         $newOrders = $request->order_ids;
-        foreach($newOrders as $key => $itemId) {
+        foreach ($newOrders as $key => $itemId) {
             $lesson = CourseChapterLession::where(['chapter_id' => $id, 'id' => $itemId])->first();
             $lesson->order = $key + 1;
             $lesson->save();
@@ -205,15 +209,17 @@ class CourseContentController extends Controller
     }
 
     /** return sort chapter list */
-    function sortChapter(string $id) : string {
+    public function sortChapter(string $id): string
+    {
         $chapters = CourseChapter::where('course_id', $id)->orderBy('order')->get();
 
         return view('frontend.instructor-dashboard.course.partials.course-chapter-sort-modal', compact('chapters'))->render();
     }
 
-    function updateSortChapter(Request $request, string $id) {
+    public function updateSortChapter(Request $request, string $id)
+    {
         $newOrders = $request->order_ids;
-        foreach($newOrders as $key => $itemId) {
+        foreach ($newOrders as $key => $itemId) {
             $lesson = CourseChapter::where(['course_id' => $id, 'id' => $itemId])->first();
             $lesson->order = $key + 1;
             $lesson->save();

@@ -8,24 +8,25 @@ use App\Traits\FileUpload;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use PHPUnit\Event\Code\Test;
 
 class TestimonialController extends Controller
 {
     use FileUpload;
+
     /**
      * Display a listing of the resource.
      */
-    public function index() : View
+    public function index(): View
     {
         $testimonials = Testimonial::paginate(20);
+
         return view('admin.sections.testimonial.index', compact('testimonials'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() : View
+    public function create(): View
     {
         return view('admin.sections.testimonial.create');
     }
@@ -45,7 +46,7 @@ class TestimonialController extends Controller
 
         $image = $this->uploadFile($request->file('image'));
 
-        $testimonial = new Testimonial();
+        $testimonial = new Testimonial;
         $testimonial->rating = $request->rating;
         $testimonial->review = $request->review;
         $testimonial->user_image = $image;
@@ -53,16 +54,15 @@ class TestimonialController extends Controller
         $testimonial->user_title = $request->title;
         $testimonial->save();
 
-        notyf()->success("Created Successfully!");
+        notyf()->success('Created Successfully!');
 
         return redirect()->route('admin.testimonial-section.index');
     }
 
-
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Testimonial $testimonial_section) : View
+    public function edit(Testimonial $testimonial_section): View
     {
         return view('admin.sections.testimonial.edit', compact('testimonial_section'));
     }
@@ -80,10 +80,9 @@ class TestimonialController extends Controller
             'image' => ['nullable', 'image', 'max:3000'],
         ]);
 
-
         $testimonial = Testimonial::findOrFail($id);
 
-        if($request->hasFile('image')) {
+        if ($request->hasFile('image')) {
             $image = $this->uploadFile($request->file('image'));
             $this->deleteFile($request->old_image);
             $testimonial->user_image = $image;
@@ -95,7 +94,7 @@ class TestimonialController extends Controller
         $testimonial->user_title = $request->title;
         $testimonial->save();
 
-        notyf()->success("Created Successfully!");
+        notyf()->success('Created Successfully!');
 
         return redirect()->route('admin.testimonial-section.index');
     }
@@ -109,9 +108,11 @@ class TestimonialController extends Controller
             $this->deleteFile($testimonial_section->image);
             $testimonial_section->delete();
             notyf()->success('Deleted Successfully!');
+
             return response(['message' => 'Deleted Successfully!'], 200);
-        }catch(Exception $e) {
-            logger("Course Language Error >> ".$e);
+        } catch (Exception $e) {
+            logger('Course Language Error >> '.$e);
+
             return response(['message' => 'Something went wrong!'], 500);
         }
     }

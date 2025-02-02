@@ -3,10 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
-use function Laravel\Prompts\password;
 
 class UserSeeder extends Seeder
 {
@@ -19,7 +16,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'student',
                 'email' => 'student@gmail.com',
-                'password' => bcrypt('123456789'), 
+                'password' => bcrypt('123456789'),
                 'role' => 'student',
                 'approve_status' => 'approved',
             ],
@@ -30,7 +27,7 @@ class UserSeeder extends Seeder
                 'approve_status' => 'approved',
                 'role' => 'instructor',
 
-            ]
+            ],
 
         ];
         User::insert($users);

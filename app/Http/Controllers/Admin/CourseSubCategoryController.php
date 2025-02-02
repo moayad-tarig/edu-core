@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\CourseSubCategoryStoreRequest;
 use App\Http\Requests\Admin\CourseCategoryUpdateRequest;
+use App\Http\Requests\Admin\CourseSubCategoryStoreRequest;
 use App\Models\CourseCategory;
 use App\Traits\FileUpload;
 use Exception;
@@ -12,12 +12,14 @@ use Exception;
 class CourseSubCategoryController extends Controller
 {
     use FileUpload;
+
     /**
      * Display a listing of the resource.
      */
     public function index(CourseCategory $course_category)
     {
         $subCategories = CourseCategory::where('parent_id', $course_category->id)->get();
+
         return view('admin.course.course-sub-category.index', compact('course_category', 'subCategories'));
     }
 
@@ -34,8 +36,8 @@ class CourseSubCategoryController extends Controller
      */
     public function store(CourseSubCategoryStoreRequest $request, CourseCategory $course_category)
     {
-        
-        $category = new CourseCategory();
+
+        $category = new CourseCategory;
         if ($request->hasFile('image')) {
             $imagePath = $this->uploadFile($request->file('image'));
             $category->image = $imagePath;
@@ -48,7 +50,7 @@ class CourseSubCategoryController extends Controller
         $category->status = $request->status ?? 0;
         $category->save();
 
-        notyf()->success("Created Successfully!");
+        notyf()->success('Created Successfully!');
 
         return to_route('admin.course-sub-categories.index', $course_category->id);
     }
@@ -83,7 +85,7 @@ class CourseSubCategoryController extends Controller
         $category->status = $request->status ?? 0;
         $category->save();
 
-        notyf()->success("Updated Successfully!");
+        notyf()->success('Updated Successfully!');
 
         return to_route('admin.course-sub-categories.index', $course_category->id);
     }
@@ -97,9 +99,11 @@ class CourseSubCategoryController extends Controller
             $this->deleteFile($course_sub_category->image);
             $course_sub_category->delete();
             notyf()->success('Deleted Successfully!');
+
             return response(['message' => 'Deleted Successfully!'], 200);
-        }catch(Exception $e) {
-            logger("Course Level Error >> ".$e);
+        } catch (Exception $e) {
+            logger('Course Level Error >> '.$e);
+
             return response(['message' => 'Something went wrong!'], 500);
         }
     }

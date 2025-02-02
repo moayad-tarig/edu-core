@@ -13,10 +13,11 @@ class LatestCourseSectionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() : View
+    public function index(): View
     {
         $categories = CourseCategory::all();
         $latestCourseSection = LatestCourseSection::first();
+
         return view('admin.sections.latest-course.index', compact('categories', 'latestCourseSection'));
     }
 
@@ -44,6 +45,7 @@ class LatestCourseSectionController extends Controller
         LatestCourseSection::updateOrCreate(['id' => 1], $validatedData);
 
         notyf()->success('Update Successfully!');
+
         return redirect()->back();
     }
 

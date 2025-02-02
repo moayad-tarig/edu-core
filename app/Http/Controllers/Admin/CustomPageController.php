@@ -13,16 +13,17 @@ class CustomPageController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() : View
+    public function index(): View
     {
         $pages = CustomPage::paginate(20);
+
         return view('admin.custom-page.index', compact('pages'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() : View
+    public function create(): View
     {
         return view('admin.custom-page.create');
     }
@@ -39,8 +40,8 @@ class CustomPageController extends Controller
             'seo_description' => ['nullable', 'string', 'max:255'],
             'status' => ['nullable', 'boolean'],
         ]);
-       
-        $page = new CustomPage();
+
+        $page = new CustomPage;
         $page->title = $request->title;
         $page->slug = \Str::slug($request->title);
         $page->description = $request->description;
@@ -55,13 +56,13 @@ class CustomPageController extends Controller
         return to_route('admin.custom-page.index');
     }
 
-
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id) : View
+    public function edit(string $id): View
     {
         $page = CustomPage::findOrFail($id);
+
         return view('admin.custom-page.edit', compact('page'));
     }
 
@@ -71,13 +72,13 @@ class CustomPageController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'title' => ['required', 'string', 'max:255', 'unique:custom_pages,title,' . $id],
+            'title' => ['required', 'string', 'max:255', 'unique:custom_pages,title,'.$id],
             'description' => ['required', 'string'],
             'seo_title' => ['nullable', 'string', 'max:255'],
             'seo_description' => ['nullable', 'string', 'max:255'],
             'status' => ['nullable', 'boolean'],
         ]);
-       
+
         $page = CustomPage::findOrFail($id);
         $page->title = $request->title;
         $page->slug = \Str::slug($request->title);
@@ -102,9 +103,11 @@ class CustomPageController extends Controller
             $page = CustomPage::findOrFail($id);
             $page->delete();
             notyf()->success('Deleted Successfully!');
+
             return response(['message' => 'Deleted Successfully!'], 200);
-        }catch(Exception $e) {
-            logger("Custom Page Error >> ".$e);
+        } catch (Exception $e) {
+            logger('Custom Page Error >> '.$e);
+
             return response(['message' => 'Something went wrong!'], 500);
         }
     }

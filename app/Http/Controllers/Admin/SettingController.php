@@ -14,41 +14,42 @@ class SettingController extends Controller
 {
     use FileUpload;
 
-    function index(): View
+    public function index(): View
     {
         return view('admin.setting.general-settings');
     }
 
-    function updateGeneralSettings(Request $request): RedirectResponse
+    public function updateGeneralSettings(Request $request): RedirectResponse
     {
         $validatedData = $request->validate([
             'site_name' => ['required'],
             'phone' => ['nullable'],
             'location' => ['nullable'],
             'default_currency' => ['required'],
-            'currency_icon' => ['required']
+            'currency_icon' => ['required'],
         ]);
 
         foreach ($validatedData as $key => $value) {
             Setting::updateOrCreate([
-                'key' => $key
+                'key' => $key,
             ], [
-                'value' => $value
+                'value' => $value,
             ]);
         }
 
         Cache::forget('settings');
 
         notyf()->success('Update Successfully!');
+
         return redirect()->back();
     }
 
-    function commissionSettingIndex(): View
+    public function commissionSettingIndex(): View
     {
         return view('admin.setting.commission-settings');
     }
 
-    function updateCommissionSetting(Request $request): RedirectResponse
+    public function updateCommissionSetting(Request $request): RedirectResponse
     {
         $validatedData = $request->validate([
             'commission_rate' => ['required', 'numeric'],
@@ -56,25 +57,27 @@ class SettingController extends Controller
 
         foreach ($validatedData as $key => $value) {
             Setting::updateOrCreate([
-                'key' => $key
+                'key' => $key,
             ], [
-                'value' => $value
+                'value' => $value,
             ]);
         }
 
         Cache::forget('settings');
 
         notyf()->success('Update Successfully!');
+
         return redirect()->back();
     }
-    function smtpSetting(): View
+
+    public function smtpSetting(): View
     {
         return view('admin.setting.smtp-settings');
     }
 
-    function updateSmtpSetting(Request $request): RedirectResponse
+    public function updateSmtpSetting(Request $request): RedirectResponse
     {
-       $validatedData = $request->validate([
+        $validatedData = $request->validate([
             'receiver_email' => ['required', 'email', 'max:255'],
             'sender_email' => ['required', 'email', 'max:255'],
 
@@ -91,24 +94,25 @@ class SettingController extends Controller
 
         foreach ($validatedData as $key => $value) {
             Setting::updateOrCreate([
-                'key' => $key
+                'key' => $key,
             ], [
-                'value' => $value
+                'value' => $value,
             ]);
         }
 
         Cache::forget('settings');
 
         notyf()->success('Update Successfully!');
+
         return redirect()->back();
     }
 
-    function logoSettingIndex() : View
+    public function logoSettingIndex(): View
     {
-        return view('admin.setting.logo-settings');  
+        return view('admin.setting.logo-settings');
     }
 
-    function updateLogoSetting(Request $request) : RedirectResponse
+    public function updateLogoSetting(Request $request): RedirectResponse
     {
         $validatedData = $request->validate([
             'site_logo' => ['nullable', 'image', 'max:3000'],
@@ -137,25 +141,16 @@ class SettingController extends Controller
 
         foreach ($validatedData as $key => $value) {
             Setting::updateOrCreate([
-                'key' => $key
+                'key' => $key,
             ], [
-                'value' => $value
+                'value' => $value,
             ]);
         }
 
         Cache::forget('settings');
 
         notyf()->success('Update Successfully!');
-        return redirect()->back(); 
+
+        return redirect()->back();
     }
-
-
-
-
-
-
-
- 
-
-
 }

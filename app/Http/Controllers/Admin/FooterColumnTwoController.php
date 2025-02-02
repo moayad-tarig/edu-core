@@ -14,16 +14,17 @@ class FooterColumnTwoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() : View
+    public function index(): View
     {
         $columnTwo = FooterColumnTwo::paginate(20);
+
         return view('admin.footer.column-two.index', compact('columnTwo'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() : View
+    public function create(): View
     {
         return view('admin.footer.column-two.create');
     }
@@ -39,7 +40,7 @@ class FooterColumnTwoController extends Controller
             'status' => ['required', 'boolean'],
         ]);
 
-        $columnTwo = new FooterColumnTwo();
+        $columnTwo = new FooterColumnTwo;
         $columnTwo->title = $request->title;
         $columnTwo->url = $request->url;
         $columnTwo->status = $request->status;
@@ -48,22 +49,23 @@ class FooterColumnTwoController extends Controller
         notyf()->success('Created Successfully!');
 
         return to_route('admin.footer-column-two.index');
-  
+
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id) : View
+    public function edit(string $id): View
     {
         $column = FooterColumnTwo::findOrFail($id);
+
         return view('admin.footer.column-two.edit', compact('column'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id) : RedirectResponse
+    public function update(Request $request, string $id): RedirectResponse
     {
         $request->validate([
             'title' => ['required', 'string', 'max:255'],
@@ -91,9 +93,11 @@ class FooterColumnTwoController extends Controller
         try {
             $column->delete();
             notyf()->success('Deleted Successfully!');
+
             return response(['message' => 'Deleted Successfully!'], 200);
-        }catch(Exception $e) {
-            logger("Footer Column One Error >> ".$e);
+        } catch (Exception $e) {
+            logger('Footer Column One Error >> '.$e);
+
             return response(['message' => 'Something went wrong!'], 500);
         }
     }

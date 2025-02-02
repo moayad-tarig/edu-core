@@ -7,11 +7,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CourseChapter extends Model
 {
-    
-
-
-    public function lessons() : HasMany
+    public function lessons(): HasMany
     {
-        return $this->hasMany(courseChapterLession::class , 'chapter_id')->orderBy('order');
+        return $this->hasMany(courseChapterLession::class, 'chapter_id')->orderBy('order');
     }
 }

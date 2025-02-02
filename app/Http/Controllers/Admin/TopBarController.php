@@ -15,6 +15,7 @@ class TopBarController extends Controller
     public function index(): View
     {
         $topbar = TopBar::first();
+
         return view('admin.top-bar.index', compact('topbar'));
     }
 
@@ -35,23 +36,21 @@ class TopBarController extends Controller
             'email' => ['nullable', 'email', 'max:255'],
             'phone' => ['nullable', 'max:255'],
             'offer_name' => ['nullable', 'string', 'max:255'],
-            'offer_short_description' => ['nullable','string', 'max:255'],
+            'offer_short_description' => ['nullable', 'string', 'max:255'],
             'offer_button_text' => ['nullable', 'string', 'max:255'],
             'offer_button_url' => ['nullable', 'string', 'max:255'],
         ]);
 
         // dd($validatedData);
 
-
         TopBar::updateOrCreate(
             ['id' => 1],
             $validatedData
         );
 
-        notyf()->success('Update Successfully!');   
+        notyf()->success('Update Successfully!');
 
         return redirect()->back();
-
 
     }
 }

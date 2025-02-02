@@ -13,12 +13,14 @@ use Illuminate\Http\Request;
 class HeroController extends Controller
 {
     use FileUpload;
+
     /**
      * Display a listing of the resource.
      */
-    public function index() : View
+    public function index(): View
     {
         $hero = Hero::first();
+
         return view('admin.sections.hero.index', compact('hero'));
     }
 
@@ -35,7 +37,7 @@ class HeroController extends Controller
      */
     public function store(HeroUpdateRequest $request): RedirectResponse
     {
-        $data =         [
+        $data = [
             'label' => $request->label,
             'title' => $request->title,
             'subtitle' => $request->subtitle,
@@ -48,17 +50,17 @@ class HeroController extends Controller
             'round_text' => $request->rounded_text,
         ];
 
-        if($request->hasFile('image')) {
+        if ($request->hasFile('image')) {
             $image = $this->uploadFile($request->file('image'));
             $this->deleteFile($request->old_image);
             $data['image'] = $image;
         }
 
-       Hero::updateOrCreate(['id' => 1], $data);
+        Hero::updateOrCreate(['id' => 1], $data);
 
-       notyf()->success('Updated Successfully');
+        notyf()->success('Updated Successfully');
 
-       return redirect()->back();
+        return redirect()->back();
 
     }
 

@@ -6,17 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\Blog;
 use App\Models\Course;
 use App\Models\Order;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Contracts\View\View;
 
 class DashboardController extends Controller
 {
-    function index() : View{
+    public function index(): View
+    {
         $todaysOrder = Order::whereDate('created_at', Carbon::today())->sum('total_amount');
-        $thisWeekOrders = Order::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('total_amount'); 
+        $thisWeekOrders = Order::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('total_amount');
         $thisMonthOrders = Order::whereMonth('created_at', Carbon::now()->month)
-        ->whereYear('created_at', Carbon::now()->year)->sum('total_amount');
+            ->whereYear('created_at', Carbon::now()->year)->sum('total_amount');
         $thisYearOrders = Order::whereYear('created_at', Carbon::now()->year)->sum('total_amount');
         $totalOrders = Order::count();
         $pendingCourses = Course::where('is_approved', 'pending')->count();
@@ -30,16 +30,15 @@ class DashboardController extends Controller
         $monthlyOrderSums = [];
         $monthlyOrderCounts = [];
 
-        for($month = 1; $month <= 12; $month++) {
+        for ($month = 1; $month <= 12; $month++) {
             $monthlyOrderSums[] = Order::whereMonth('created_at', $month)
-            ->whereYear('created_at', Carbon::now()->year)
-            ->sum('total_amount');
+                ->whereYear('created_at', Carbon::now()->year)
+                ->sum('total_amount');
 
             $monthlyOrderCounts[] = Order::whereMonth('created_at', $month)
-            ->whereYear('created_at', Carbon::now()->year)
-            ->count();
+                ->whereYear('created_at', Carbon::now()->year)
+                ->count();
         }
-
 
         return view('admin.dashboard', compact(
             'todaysOrder', 'thisWeekOrders', 'thisMonthOrders', 'thisYearOrders', 'totalOrders',

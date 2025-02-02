@@ -4,55 +4,52 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CourseBasicInfoCreateRequest;
-
 use App\Models\Course;
 use App\Models\CourseCategory;
 use App\Models\CourseChapter;
 use App\Models\CourseLanguage;
 use App\Models\CourseLevel;
 use App\Models\User;
-
 use App\Traits\FileUpload;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
-
 
 class CourseController extends Controller
 {
     use FileUpload;
 
-    function index(): View
+    public function index(): View
     {
         $courses = Course::with(['instructor'])->paginate(25);
+
         return view('admin.course.course-module.index', compact('courses'));
     }
 
     /** change approve status */
-    function updateApproval(Request $request, Course $course) : Response{
+    public function updateApproval(Request $request, Course $course): Response
+    {
         $course->is_approved = $request->status;
         $course->save();
 
         return response(['status' => 'success', 'message' => 'Updated successfully.']);
     }
 
-
-    function create(): View
+    public function create(): View
     {
         $instructors = User::where('role', 'instructor')
-        ->where('approve_status', 'approved')->get();
+            ->where('approve_status', 'approved')->get();
+
         // dd($instructors);
         return view('admin.course.course-module.create', compact('instructors'));
     }
 
-
-    function storeBasicInfo(CourseBasicInfoCreateRequest $request)
+    public function storeBasicInfo(CourseBasicInfoCreateRequest $request)
     {
         $thumbnailPath = $this->uploadFile($request->file('thumbnail'));
-        $course = new Course();
+        $course = new Course;
         $course->title = $request->title;
         $course->slug = Str::slug($request->title);
         $course->seo_description = $request->seo_description;
@@ -71,16 +68,17 @@ class CourseController extends Controller
         return response([
             'status' => 'success',
             'message' => 'Updated successfully.',
-            'redirect' => route('admin.courses.edit', ['id' => $course->id, 'step' => $request->next_step])
+            'redirect' => route('admin.courses.edit', ['id' => $course->id, 'step' => $request->next_step]),
         ]);
     }
 
-    function edit(Request $request)
+    public function edit(Request $request)
     {
 
         switch ($request->step) {
             case '1':
                 $course = Course::findOrFail($request->id);
+
                 return view('admin.course.course-module.edit', compact('course'));
                 break;
 
@@ -89,12 +87,14 @@ class CourseController extends Controller
                 $levels = CourseLevel::all();
                 $languages = CourseLanguage::all();
                 $course = Course::findOrFail($request->id);
+
                 return view('admin.course.course-module.more-info', compact('categories', 'levels', 'languages', 'course'));
                 break;
 
             case '3':
                 $courseId = $request->id;
                 $chapters = CourseChapter::where(['course_id' => $courseId])->orderBy('order')->get();
+
                 return view('admin.course.course-module.course-content', compact('courseId', 'chapters'));
                 break;
 
@@ -102,12 +102,13 @@ class CourseController extends Controller
                 $courseId = $request->id;
                 $course = Course::findOrFail($request->id);
                 $editMode = true;
+
                 return view('admin.course.course-module.finish', compact('course', 'editMode'));
                 break;
         }
     }
 
-    function update(Request $request)
+    public function update(Request $request)
     {
         // dd($request->all());
         switch ($request->current_step) {
@@ -120,7 +121,7 @@ class CourseController extends Controller
                     'discount' => ['nullable', 'numeric'],
                     'description' => ['required'],
                     'thumbnail' => ['nullable', 'image', 'max:3000'],
-                    'demo_video_source' => ['nullable']
+                    'demo_video_source' => ['nullable'],
                 ];
 
                 $request->validate($rules);
@@ -150,7 +151,7 @@ class CourseController extends Controller
                 return response([
                     'status' => 'success',
                     'message' => 'Updated successfully.',
-                    'redirect' => route('admin.courses.edit', ['id' => $course->id, 'step' => $request->next_step])
+                    'redirect' => route('admin.courses.edit', ['id' => $course->id, 'step' => $request->next_step]),
                 ]);
 
                 break;
@@ -181,7 +182,7 @@ class CourseController extends Controller
                 return response([
                     'status' => 'success',
                     'message' => 'Updated successfully.',
-                    'redirect' => route('admin.courses.edit', ['id' => $course->id, 'step' => $request->next_step])
+                    'redirect' => route('admin.courses.edit', ['id' => $course->id, 'step' => $request->next_step]),
                 ]);
 
                 break;
@@ -189,7 +190,7 @@ class CourseController extends Controller
                 return response([
                     'status' => 'success',
                     'message' => 'Updated successfully.',
-                    'redirect' => route('admin.courses.edit', ['id' => $request->id, 'step' => $request->next_step])
+                    'redirect' => route('admin.courses.edit', ['id' => $request->id, 'step' => $request->next_step]),
                 ]);
                 break;
 
@@ -197,7 +198,7 @@ class CourseController extends Controller
                 // validation
                 $request->validate([
                     'message' => ['nullable', 'max:1000', 'string'],
-                    'status' => ['required', 'in:active,inactive,draft']
+                    'status' => ['required', 'in:active,inactive,draft'],
                 ]);
 
                 // update course data
@@ -205,20 +206,21 @@ class CourseController extends Controller
                 $course->message_for_reviewer = $request->message;
                 $course->status = $request->status;
                 $course->save();
+
                 return response([
                     'status' => 'success',
                     'message' => 'Updated successfully.',
-                    'redirect' => route('admin.courses.index')
+                    'redirect' => route('admin.courses.index'),
                 ]);
                 break;
         }
     }
 
-
-
-    function courseDestroy(Course $course){
+    public function courseDestroy(Course $course)
+    {
 
         $course->delete();
+
         return response(['status' => 'success', 'message' => 'Deleted successfully.']);
     }
 }

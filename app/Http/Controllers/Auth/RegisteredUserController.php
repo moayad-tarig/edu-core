@@ -16,6 +16,7 @@ use Illuminate\View\View;
 class RegisteredUserController extends Controller
 {
     use FileUpload;
+
     /**
      * Display the registration view.
      */
@@ -37,7 +38,7 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        if($request->type == 'student'){
+        if ($request->type == 'student') {
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -46,8 +47,7 @@ class RegisteredUserController extends Controller
                 'approve_status' => 'approved',
             ]);
 
-
-        }elseif($request->type == 'instructor'){
+        } elseif ($request->type == 'instructor') {
             $request->validate([
                 'document' => 'required|mimes:pdf,doc,docx,jpg|max:2048',
             ]);
@@ -61,16 +61,16 @@ class RegisteredUserController extends Controller
                 'approve_status' => 'pending',
             ]);
 
-        }else {
+        } else {
             abort(404);
         }
 
         event(new Registered($user));
         Auth::login($user);
 
-        if($request->user()->role == 'student'){
+        if ($request->user()->role == 'student') {
             return redirect(route('student.dashboard', absolute: false));
-        }else {
+        } else {
             return redirect(route('instructor.dashboard', absolute: false));
         }
 

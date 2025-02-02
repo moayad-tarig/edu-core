@@ -13,10 +13,9 @@ class PaymentGatewaySettingServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(PaymentGatewaySettingService::class, function () {
-            return new PaymentGatewaySettingService();
+            return new PaymentGatewaySettingService;
         });
 
-      
     }
 
     /**

@@ -16,16 +16,17 @@ class ContactController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() : View
+    public function index(): View
     {
         $contactCards = Contact::all();
+
         return view('admin.contact.index', compact('contactCards'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() : View
+    public function create(): View
     {
         return view('admin.contact.create');
     }
@@ -45,7 +46,7 @@ class ContactController extends Controller
 
         $icon = $this->uploadFile($request->file('icon'));
 
-        $contact = new Contact();
+        $contact = new Contact;
         $contact->icon = $icon;
         $contact->title = $request->title;
         $contact->line_one = $request->line_one;
@@ -80,7 +81,7 @@ class ContactController extends Controller
             'status' => ['required', 'boolean'],
         ]);
 
-        if($request->hasFile('icon')) {
+        if ($request->hasFile('icon')) {
             $icon = $this->uploadFile($request->file('icon'));
             $this->deleteFile($request->old_icon);
             $contact->icon = $icon;
@@ -107,9 +108,11 @@ class ContactController extends Controller
             $this->deleteFile($contact->icon);
             $contact->delete();
             notyf()->success('Deleted Successfully!');
+
             return response(['message' => 'Deleted Successfully!'], 200);
-        }catch(Exception $e) {
-            logger("Course Language Error >> ".$e);
+        } catch (Exception $e) {
+            logger('Course Language Error >> '.$e);
+
             return response(['message' => 'Something went wrong!'], 500);
         }
     }

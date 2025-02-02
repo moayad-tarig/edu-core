@@ -8,42 +8,39 @@ use Illuminate\Http\Request;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Stripe\Checkout\Session as StripeSession;
 use Stripe\Stripe;
-use Razorpay\Api\Api as RazorpayApi;
 
 class PaymentController extends Controller
 {
-
-    function orderSuccess()
+    public function orderSuccess()
     {
         return view('frontend.pages.order-success');
     }
 
-
-    function orderFailed()
+    public function orderFailed()
     {
         return view('frontend.pages.order-failed');
     }
 
-    function paypalConfig(): array
+    public function paypalConfig(): array
     {
         return [
-            'mode'    => config('gateway_settings.paypal_mode'),
+            'mode' => config('gateway_settings.paypal_mode'),
             'sandbox' => [
-                'client_id'         => config('gateway_settings.paypal_client_id'),
-                'client_secret'     => config('gateway_settings.paypal_client_secret'),
-                'app_id'            => 'APP-80W284485P519543T',
+                'client_id' => config('gateway_settings.paypal_client_id'),
+                'client_secret' => config('gateway_settings.paypal_client_secret'),
+                'app_id' => 'APP-80W284485P519543T',
             ],
             'live' => [
-                'client_id'         => config('gateway_settings.paypal_client_id'),
-                'client_secret'     => config('gateway_settings.paypal_client_secret'),
-                'app_id'            => config('gateway_settings.paypal_app_id'),
+                'client_id' => config('gateway_settings.paypal_client_id'),
+                'client_secret' => config('gateway_settings.paypal_client_secret'),
+                'app_id' => config('gateway_settings.paypal_app_id'),
             ],
 
-            'payment_action' => "Sale",
-            'currency'       => config('gateway_settings.paypal_currency'),
-            'notify_url'     => '',
-            'locale'         => 'en_US',
-            'validate_ssl'   => true,
+            'payment_action' => 'Sale',
+            'currency' => config('gateway_settings.paypal_currency'),
+            'notify_url' => '',
+            'locale' => 'en_US',
+            'validate_ssl' => true,
         ];
     }
 
@@ -51,28 +48,26 @@ class PaymentController extends Controller
     {
         $provider = new PayPalClient($this->paypalConfig());
         $provider->getAccessToken();
-        
+
         $payableAmount = cartTotal() * config('gateway_settings.paypal_rate');
-       
 
         $response = $provider->createOrder([
             'intent' => 'CAPTURE',
             'application_context' => [
                 'return_url' => route('paypal.success'),
-                'cancel_url' => route('paypal.cancel')
+                'cancel_url' => route('paypal.cancel'),
             ],
             'purchase_units' => [
                 [
                     'amount' => [
                         'currency_code' => config('paypal.currency'),
-                        'value' => $payableAmount
-                    ]
-                ]
-            ]
+                        'value' => $payableAmount,
+                    ],
+                ],
+            ],
         ]);
-        
 
-        if (isset($response['id']) && $response['id'] != NULL) {
+        if (isset($response['id']) && $response['id'] != null) {
             foreach ($response['links'] as $link) {
                 if ($link['rel'] == 'approve') {
                     return redirect()->away($link['href']);
@@ -81,7 +76,7 @@ class PaymentController extends Controller
         }
     }
 
-    function paypalSuccess(Request $request)
+    public function paypalSuccess(Request $request)
     {
 
         $provider = new PayPalClient($this->paypalConfig());
@@ -117,11 +112,11 @@ class PaymentController extends Controller
         return redirect()->route('order.failed');
     }
 
-    public function payWithStripe(){
+    public function payWithStripe()
+    {
         Stripe::setApiKey(config('gateway_settings.stripe_secret'));
         $payableAmount = (cartTotal() * 100) * config('gateway_settings.stripe_rate');
         $quantityCount = cartCount();
-
 
         $response = StripeSession::create([
             'line_items' => [
@@ -135,23 +130,23 @@ class PaymentController extends Controller
 
                     ],
                     'quantity' => $quantityCount,
-                ]
+                ],
             ],
             'mode' => 'payment',
-            'success_url' => route('stripe.success') . '?session_id={CHECKOUT_SESSION_ID}',
+            'success_url' => route('stripe.success').'?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => route('stripe.cancel'),
         ]);
+
         return redirect()->away($response->url);
 
     }
 
-
-
-    public function stripeSuccess(Request $request){
+    public function stripeSuccess(Request $request)
+    {
         Stripe::setApiKey(config('gateway_settings.stripe_secret'));
         $session = StripeSession::retrieve($request->session_id);
 
-        if($session->payment_status === 'paid'){
+        if ($session->payment_status === 'paid') {
             $transactionId = $session->payment_intent;
             $mainAmount = cartTotal();
             $paidAmount = $session->amount_total / 100;
@@ -177,9 +172,8 @@ class PaymentController extends Controller
         return redirect()->route('order.failed');
     }
 
-    function stripeCancel(Request $request) {
+    public function stripeCancel(Request $request)
+    {
         return redirect()->route('order.failed');
     }
-
-  
 }

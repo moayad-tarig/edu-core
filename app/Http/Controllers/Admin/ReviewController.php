@@ -15,6 +15,7 @@ class ReviewController extends Controller
     public function index()
     {
         $reviews = Review::with(['user', 'course'])->latest()->paginate(20);
+
         return view('admin.review.index', compact('reviews'));
     }
 
@@ -27,6 +28,7 @@ class ReviewController extends Controller
         $review->save();
 
         notyf()->success('Updated Successfully!');
+
         return redirect()->back();
     }
 
@@ -38,12 +40,13 @@ class ReviewController extends Controller
         try {
             $review->delete();
             notyf()->success('Deleted Successfully!');
+
             return response(['message' => 'Deleted Successfully!'], 200);
-        }catch(Exception $e) {
-            logger("Course Ratting Error >> ".$e);
+        } catch (Exception $e) {
+            logger('Course Ratting Error >> '.$e);
+
             return response(['message' => 'Something went wrong!'], 500);
         }
 
-    
     }
 }

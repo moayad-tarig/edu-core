@@ -12,19 +12,21 @@ use Illuminate\Http\Request;
 class BrandSectionController extends Controller
 {
     use FileUpload;
+
     /**
      * Display a listing of the resource.
      */
-    public function index() : View
+    public function index(): View
     {
         $brands = Brand::all();
+
         return view('admin.sections.brand.index', compact('brands'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() : View
+    public function create(): View
     {
         return view('admin.sections.brand.create');
     }
@@ -42,13 +44,13 @@ class BrandSectionController extends Controller
 
         $imagePath = $this->uploadFile($request->file('image'));
 
-        $brand = new Brand();
+        $brand = new Brand;
         $brand->image = $imagePath;
         $brand->url = $request->url;
         $brand->status = $request->status;
         $brand->save();
 
-        notyf()->success("Created Successfully!");
+        notyf()->success('Created Successfully!');
 
         return redirect()->route('admin.brand-section.index');
     }
@@ -59,6 +61,7 @@ class BrandSectionController extends Controller
     public function edit(Brand $brand_section)
     {
         $brand = $brand_section;
+
         return view('admin.sections.brand.edit', compact('brand'));
     }
 
@@ -75,7 +78,7 @@ class BrandSectionController extends Controller
 
         $brand = Brand::findOrFail($id);
 
-        if($request->hasFile('image')) {
+        if ($request->hasFile('image')) {
             $imagePath = $this->uploadFile($request->file('image'));
             $brand->image = $imagePath;
         }
@@ -84,7 +87,7 @@ class BrandSectionController extends Controller
         $brand->status = $request->status;
         $brand->save();
 
-        notyf()->success("Update Successfully!");
+        notyf()->success('Update Successfully!');
 
         return redirect()->route('admin.brand-section.index');
     }
@@ -98,9 +101,11 @@ class BrandSectionController extends Controller
             $this->deleteFile($brand_section->image);
             $brand_section->delete();
             notyf()->success('Deleted Successfully!');
+
             return response(['message' => 'Deleted Successfully!'], 200);
-        }catch(Exception $e) {
-            logger("Course Language Error >> ".$e);
+        } catch (Exception $e) {
+            logger('Course Language Error >> '.$e);
+
             return response(['message' => 'Something went wrong!'], 500);
         }
     }

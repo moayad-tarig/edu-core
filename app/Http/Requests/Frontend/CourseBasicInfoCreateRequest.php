@@ -29,7 +29,7 @@ class CourseBasicInfoCreateRequest extends FormRequest
             'discount' => ['nullable', 'numeric'],
             'description' => ['required'],
             'thumbnail' => ['required', 'image', 'max:3000'],
-            'demo_video_source' => ['nullable']
+            'demo_video_source' => ['nullable'],
         ];
     }
 }

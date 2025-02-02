@@ -12,6 +12,6 @@ class CheckoutController extends Controller
      */
     public function __invoke(Request $request)
     {
-       return view('frontend.pages.checkout-page');
+        return view('frontend.pages.checkout-page');
     }
 }

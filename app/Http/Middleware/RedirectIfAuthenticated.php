@@ -38,7 +38,7 @@ class RedirectIfAuthenticated
     /**
      * Get the path the user should be redirected to when they are authenticated.
      */
-    protected function redirectTo(Request $request , ?string $guard): ?string
+    protected function redirectTo(Request $request, ?string $guard): ?string
     {
         return static::$redirectToCallback
             ? call_user_func(static::$redirectToCallback, $request)
@@ -52,15 +52,15 @@ class RedirectIfAuthenticated
     {
         $routes = [
             'admin' => 'admin.dashboard',
-            'web' => 'dashboard'
+            'web' => 'dashboard',
         ];
-        
-        if(array_key_exists($guard, $routes)){
+
+        if (array_key_exists($guard, $routes)) {
             $routeName = $routes[$guard];
-            if(Route::has($routeName)){
+            if (Route::has($routeName)) {
                 return route($routeName);
             }
-        };
+        }
 
         return '/';
     }
@@ -68,7 +68,6 @@ class RedirectIfAuthenticated
     /**
      * Specify the callback that should be used to generate the redirect path.
      *
-     * @param  callable  $redirectToCallback
      * @return void
      */
     public static function redirectUsing(callable $redirectToCallback)

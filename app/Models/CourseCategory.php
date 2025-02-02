@@ -8,18 +8,18 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CourseCategory extends Model
 {
-    
-
-    function subCategories() : HasMany{
+    public function subCategories(): HasMany
+    {
         return $this->hasMany(CourseCategory::class, 'parent_id');
     }
 
-    function parentCategory() : BelongsTo {
+    public function parentCategory(): BelongsTo
+    {
         return $this->belongsTo(CourseCategory::class, 'parent_id');
     }
 
-
-    function courses() : HasMany {
-       return $this->hasMany(Course::class, 'category_id'); 
+    public function courses(): HasMany
+    {
+        return $this->hasMany(Course::class, 'category_id');
     }
 }

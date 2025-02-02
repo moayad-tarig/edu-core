@@ -13,6 +13,7 @@ use Illuminate\Http\Response;
 class FeaturedInstructorController extends Controller
 {
     use FileUpload;
+
     /**
      * Display a listing of the resource.
      */
@@ -21,12 +22,14 @@ class FeaturedInstructorController extends Controller
         $instructors = User::where('role', 'instructor')->where('approve_status', 'approved')->get();
         $featuredInstructor = FeaturedInstructor::first();
         $selectedCourses = json_decode($featuredInstructor?->featured_courses);
-        
+
         $selectedInstructorCourses = Course::select(['id', 'title'])->where('instructor_id', $featuredInstructor?->instructor_id)->get();
+
         return view('admin.sections.featured-instructor.index', compact('instructors', 'featuredInstructor', 'selectedCourses', 'selectedInstructorCourses'));
     }
 
-    function getInstructorCourses(string $id) : Response {
+    public function getInstructorCourses(string $id): Response
+    {
         $courses = Course::select(['id', 'title'])->where('instructor_id', $id)->where('is_approved', 'approved')->get();
 
         return response(['courses' => $courses]);
@@ -58,7 +61,7 @@ class FeaturedInstructorController extends Controller
 
         $validatedData['featured_courses'] = json_encode($validatedData['featured_courses']);
 
-        if($request->hasFile('instructor_image')) {
+        if ($request->hasFile('instructor_image')) {
             $image = $this->uploadFile($request->file('instructor_image'));
             $this->deleteFile($request->old_instructor_image);
             $validatedData['instructor_image'] = $image;
@@ -70,6 +73,7 @@ class FeaturedInstructorController extends Controller
         );
 
         notyf()->success('Update Successfully!');
+
         return redirect()->back();
     }
 
@@ -105,6 +109,3 @@ class FeaturedInstructorController extends Controller
         //
     }
 }
-
-
-

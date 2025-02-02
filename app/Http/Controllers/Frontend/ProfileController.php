@@ -15,21 +15,21 @@ class ProfileController extends Controller
 {
     use FileUpload;
 
-    function index() : View {
-       return view('frontend.student-dashboard.profile.index'); 
+    public function index(): View
+    {
+        return view('frontend.student-dashboard.profile.index');
     }
 
-    function instructorIndex() : View {
-       return view('frontend.instructor-dashboard.profile.index'); 
+    public function instructorIndex(): View
+    {
+        return view('frontend.instructor-dashboard.profile.index');
     }
 
-
-
-
-/** @var \App\Models\User $user **/
-    public function profileUpdate(ProfileUpdateRequest $request) : RedirectResponse {
+    /** @var \App\Models\User * */
+    public function profileUpdate(ProfileUpdateRequest $request): RedirectResponse
+    {
         $user = Auth::user();
-        if($request->hasFile('avatar')) {
+        if ($request->hasFile('avatar')) {
             $avatarPath = $this->uploadFile($request->file('avatar'));
             $this->deleteFile($user->image);
             $user->image = $avatarPath;
@@ -45,8 +45,10 @@ class ProfileController extends Controller
 
         return redirect()->back();
     }
-/** @var \App\Models\User $user **/
-    public function updatePassword(PasswordUpdateRequest $request) : RedirectResponse {
+
+    /** @var \App\Models\User * */
+    public function updatePassword(PasswordUpdateRequest $request): RedirectResponse
+    {
         $user = Auth::user();
         $user->password = bcrypt($request->password);
         $user->save();
@@ -57,8 +59,9 @@ class ProfileController extends Controller
 
     }
 
-    /** @var \App\Models\User $user **/
-    public function updateSocial(SocialUpdateRequest $request) : RedirectResponse {
+    /** @var \App\Models\User * */
+    public function updateSocial(SocialUpdateRequest $request): RedirectResponse
+    {
         $user = Auth::user();
         $user->facebook = $request->facebook;
         $user->x = $request->x;
@@ -66,9 +69,7 @@ class ProfileController extends Controller
         $user->website = $request->website;
         $user->save();
         notyf()->success('Updated Successfully');
-        
+
         return redirect()->back();
     }
-
- 
 }

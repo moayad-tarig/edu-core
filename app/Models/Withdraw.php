@@ -7,9 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Withdraw extends Model
 {
-
-    function instructor() : BelongsTo
+    public function instructor(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'instructor_id', 'id');     
+        return $this->belongsTo(User::class, 'instructor_id', 'id');
     }
 }

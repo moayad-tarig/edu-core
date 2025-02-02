@@ -14,7 +14,7 @@ class SettingServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(SettingService::class, function () {
-            return new SettingService();
+            return new SettingService;
         });
     }
 
@@ -23,10 +23,10 @@ class SettingServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-       $settings =  $this->app->make(SettingService::class);
-         $settings->setGlobalSettings();
+        $settings = $this->app->make(SettingService::class);
+        $settings->setGlobalSettings();
 
-              // set mail config
+        // set mail config
         Config::set('mail.mailers.smtp', [
             'transport' => config('settings.mail_mailer'),
             'host' => config('settings.mail_host'),

@@ -19,156 +19,156 @@ return [
         'STN', 'SVC', 'SYP', 'SZL', 'THB', 'TJS', 'TMT', 'TND', 'TOP', 'TRY',
         'TTD', 'TVD', 'TWD', 'TZS', 'UAH', 'UGX', 'USD', 'UYU', 'UZS', 'VES',
         'VND', 'VUV', 'WST', 'XAF', 'XCD', 'XDR', 'XOF', 'XPF', 'YER', 'ZAR',
-        'ZMW', 'ZWL'
+        'ZMW', 'ZWL',
     ],
 
     'paypal_currencies' => [
         'AUD' => [
             'name' => 'Australian Dollar',
             'symbol' => 'A$',
-            'code' => 'AUD'
+            'code' => 'AUD',
         ],
         'BRL' => [
             'name' => 'Brazilian Real',
             'symbol' => 'R$',
-            'code' => 'BRL'
+            'code' => 'BRL',
         ],
         'CAD' => [
             'name' => 'Canadian Dollar',
             'symbol' => 'C$',
-            'code' => 'CAD'
+            'code' => 'CAD',
         ],
         'CNY' => [
             'name' => 'Chinese Renminbi',
             'symbol' => '¥',
-            'code' => 'CNY'
+            'code' => 'CNY',
         ],
         'CZK' => [
             'name' => 'Czech Koruna',
             'symbol' => 'Kč',
-            'code' => 'CZK'
+            'code' => 'CZK',
         ],
         'DKK' => [
             'name' => 'Danish Krone',
             'symbol' => 'kr',
-            'code' => 'DKK'
+            'code' => 'DKK',
         ],
         'EUR' => [
             'name' => 'Euro',
             'symbol' => '€',
-            'code' => 'EUR'
+            'code' => 'EUR',
         ],
         'HKD' => [
             'name' => 'Hong Kong Dollar',
             'symbol' => 'HK$',
-            'code' => 'HKD'
+            'code' => 'HKD',
         ],
         'HUF' => [
             'name' => 'Hungarian Forint',
             'symbol' => 'Ft',
-            'code' => 'HUF'
+            'code' => 'HUF',
         ],
         'ILS' => [
             'name' => 'Israeli New Shekel',
             'symbol' => '₪',
-            'code' => 'ILS'
+            'code' => 'ILS',
         ],
         'JPY' => [
             'name' => 'Japanese Yen',
             'symbol' => '¥',
-            'code' => 'JPY'
+            'code' => 'JPY',
         ],
         'MYR' => [
             'name' => 'Malaysian Ringgit',
             'symbol' => 'RM',
-            'code' => 'MYR'
+            'code' => 'MYR',
         ],
         'MXN' => [
             'name' => 'Mexican Peso',
             'symbol' => 'Mex$',
-            'code' => 'MXN'
+            'code' => 'MXN',
         ],
         'TWD' => [
             'name' => 'New Taiwan Dollar',
             'symbol' => 'NT$',
-            'code' => 'TWD'
+            'code' => 'TWD',
         ],
         'NZD' => [
             'name' => 'New Zealand Dollar',
             'symbol' => 'NZ$',
-            'code' => 'NZD'
+            'code' => 'NZD',
         ],
         'NOK' => [
             'name' => 'Norwegian Krone',
             'symbol' => 'kr',
-            'code' => 'NOK'
+            'code' => 'NOK',
         ],
         'PHP' => [
             'name' => 'Philippine Peso',
             'symbol' => '₱',
-            'code' => 'PHP'
+            'code' => 'PHP',
         ],
         'PLN' => [
             'name' => 'Polish Złoty',
             'symbol' => 'zł',
-            'code' => 'PLN'
+            'code' => 'PLN',
         ],
         'GBP' => [
             'name' => 'Pound Sterling',
             'symbol' => '£',
-            'code' => 'GBP'
+            'code' => 'GBP',
         ],
         'RUB' => [
             'name' => 'Russian Ruble',
             'symbol' => '₽',
-            'code' => 'RUB'
+            'code' => 'RUB',
         ],
         'SGD' => [
             'name' => 'Singapore Dollar',
             'symbol' => 'S$',
-            'code' => 'SGD'
+            'code' => 'SGD',
         ],
         'SEK' => [
             'name' => 'Swedish Krona',
             'symbol' => 'kr',
-            'code' => 'SEK'
+            'code' => 'SEK',
         ],
         'CHF' => [
             'name' => 'Swiss Franc',
             'symbol' => 'CHF',
-            'code' => 'CHF'
+            'code' => 'CHF',
         ],
         'THB' => [
             'name' => 'Thai Baht',
             'symbol' => '฿',
-            'code' => 'THB'
+            'code' => 'THB',
         ],
         'USD' => [
             'name' => 'United States Dollar',
             'symbol' => '$',
-            'code' => 'USD'
-        ]
+            'code' => 'USD',
         ],
+    ],
 
-        'stripe_currencies' => [
-            'USD', 'AED', 'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AUD', 'AWG', 'AZN', 
-            'BAM', 'BBD', 'BDT', 'BGN', 'BIF', 'BMD', 'BND', 'BOB', 'BRL', 'BSD', 'BWP', 
-            'BYN', 'BZD', 'CAD', 'CDF', 'CHF', 'CNY', 'COP', 'CRC', 'CVE', 'CZK', 'DJF', 
-            'DKK', 'DOP', 'DZD', 'EGP', 'ETB', 'EUR', 'FJD', 'FKP', 'GBP', 'GEL', 'GIP', 
-            'GMD', 'GNF', 'GTQ', 'GYD', 'HKD', 'HNL', 'HRK', 'HTG', 'HUF', 'IDR', 'ILS', 
-            'INR', 'ISK', 'JMD', 'JPY', 'KES', 'KGS', 'KHR', 'KMF', 'KRW', 'KYD', 'KZT', 
-            'LAK', 'LBP', 'LKR', 'LRD', 'LSL', 'MAD', 'MDL', 'MGA', 'MKD', 'MMK', 'MNT', 
-            'MOP', 'MRO', 'MUR', 'MVR', 'MWK', 'MXN', 'MYR', 'MZN', 'NAD', 'NGN', 'NIO', 
-            'NOK', 'NPR', 'NZD', 'PAB', 'PEN', 'PGK', 'PHP', 'PKR', 'PLN', 'PYG', 'QAR', 
-            'RON', 'RSD', 'RUB', 'RWF', 'SAR', 'SBD', 'SCR', 'SEK', 'SGD', 'SHP', 'SLL', 
-            'SOS', 'SRD', 'STD', 'SZL', 'THB', 'TJS', 'TOP', 'TRY', 'TTD', 'TWD', 'TZS', 
-            'UAH', 'UGX', 'UYU', 'UZS', 'VND', 'VUV', 'WST', 'XAF', 'XCD', 'XOF', 'XPF', 
-            'YER', 'ZAR', 'ZMW'
-        ],
-        
-        'razorpay_currencies' => [
-            'INR', 'USD', 'EUR', 'GBP', 'SGD', 'AED', 'CAD', 'CNY', 
-            'SEK', 'NZD', 'CHF', 'DKK', 'JPY', 'MYR', 'SAR', 'IDR'
-        ]
+    'stripe_currencies' => [
+        'USD', 'AED', 'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AUD', 'AWG', 'AZN',
+        'BAM', 'BBD', 'BDT', 'BGN', 'BIF', 'BMD', 'BND', 'BOB', 'BRL', 'BSD', 'BWP',
+        'BYN', 'BZD', 'CAD', 'CDF', 'CHF', 'CNY', 'COP', 'CRC', 'CVE', 'CZK', 'DJF',
+        'DKK', 'DOP', 'DZD', 'EGP', 'ETB', 'EUR', 'FJD', 'FKP', 'GBP', 'GEL', 'GIP',
+        'GMD', 'GNF', 'GTQ', 'GYD', 'HKD', 'HNL', 'HRK', 'HTG', 'HUF', 'IDR', 'ILS',
+        'INR', 'ISK', 'JMD', 'JPY', 'KES', 'KGS', 'KHR', 'KMF', 'KRW', 'KYD', 'KZT',
+        'LAK', 'LBP', 'LKR', 'LRD', 'LSL', 'MAD', 'MDL', 'MGA', 'MKD', 'MMK', 'MNT',
+        'MOP', 'MRO', 'MUR', 'MVR', 'MWK', 'MXN', 'MYR', 'MZN', 'NAD', 'NGN', 'NIO',
+        'NOK', 'NPR', 'NZD', 'PAB', 'PEN', 'PGK', 'PHP', 'PKR', 'PLN', 'PYG', 'QAR',
+        'RON', 'RSD', 'RUB', 'RWF', 'SAR', 'SBD', 'SCR', 'SEK', 'SGD', 'SHP', 'SLL',
+        'SOS', 'SRD', 'STD', 'SZL', 'THB', 'TJS', 'TOP', 'TRY', 'TTD', 'TWD', 'TZS',
+        'UAH', 'UGX', 'UYU', 'UZS', 'VND', 'VUV', 'WST', 'XAF', 'XCD', 'XOF', 'XPF',
+        'YER', 'ZAR', 'ZMW',
+    ],
+
+    'razorpay_currencies' => [
+        'INR', 'USD', 'EUR', 'GBP', 'SGD', 'AED', 'CAD', 'CNY',
+        'SEK', 'NZD', 'CHF', 'DKK', 'JPY', 'MYR', 'SAR', 'IDR',
+    ],
 
 ];

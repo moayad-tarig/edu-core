@@ -14,6 +14,6 @@ return [
         'doc' => 'Doc',
         'pdf' => 'Pdf',
         'file' => 'File',
-    ]
+    ],
 
 ];

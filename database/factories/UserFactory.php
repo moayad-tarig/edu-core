@@ -37,7 +37,7 @@ class UserFactory extends Factory
             'role' => 'instructor',
             'approve_status' => 'approved',
             'remember_token' => Str::random(10),
-       
+
         ];
     }
 

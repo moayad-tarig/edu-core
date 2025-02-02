@@ -12,9 +12,8 @@ class BlogComment extends Model
 
     protected $fillable = ['user_id', 'blog_id', 'comment'];
 
-
-    function user() : BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);     
+        return $this->belongsTo(User::class);
     }
 }

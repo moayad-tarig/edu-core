@@ -15,16 +15,14 @@ class CounterController extends Controller
     public function index(): View
     {
         $counter = Counter::first();
+
         return view('admin.sections.counter.index', compact('counter'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -41,7 +39,6 @@ class CounterController extends Controller
             'counter_four' => ['nullable', 'numeric'],
             'title_four' => ['nullable', 'string', 'max:255'],
         ]);
-
 
         Counter::updateOrCreate(
             ['id' => 1],

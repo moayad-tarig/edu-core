@@ -19,9 +19,9 @@ class InstructorRequestController extends Controller
     public function index(): View
     {
         $instructorsRequests = User::where('approve_status', 'pending')->orWhere('approve_status', 'rejected')->get();
+
         return view('admin.instructor-request.index', compact('instructorsRequests'));
     }
-
 
     /**
      *  Download a document files
@@ -79,7 +79,6 @@ class InstructorRequestController extends Controller
 
         self::sendNotification($instructor_request);
 
-
         return redirect()->back();
     }
 
@@ -91,24 +90,24 @@ class InstructorRequestController extends Controller
         //
     }
 
-    static public function sendNotification($instructor_request): void
+    public static function sendNotification($instructor_request): void
     {
 
         switch ($instructor_request->approve_status) {
             case 'approved':
                 if (config('mail_queue.is_queue')) {
-                    Mail::to($instructor_request->email)->queue(new InstructorRequestApprovedMail());
+                    Mail::to($instructor_request->email)->queue(new InstructorRequestApprovedMail);
                 } else {
-                    Mail::to($instructor_request->email)->send(new InstructorRequestApprovedMail());
+                    Mail::to($instructor_request->email)->send(new InstructorRequestApprovedMail);
                 }
 
                 break;
 
             case 'rejected':
                 if (config('mail_queue.is_queue')) {
-                    Mail::to($instructor_request->email)->queue(new InstructorRequestRejectedMail());
+                    Mail::to($instructor_request->email)->queue(new InstructorRequestRejectedMail);
                 } else {
-                    Mail::to($instructor_request->email)->send(new InstructorRequestRejectedMail());
+                    Mail::to($instructor_request->email)->send(new InstructorRequestRejectedMail);
                 }
                 break;
         }

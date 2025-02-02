@@ -7,11 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Enrollment extends Model
 {
-    
-
-
-
-    function course() : BelongsTo {
-        return $this->belongsTo(Course::class, 'course_id', 'id'); 
-     }
+    public function course(): BelongsTo
+    {
+        return $this->belongsTo(Course::class, 'course_id', 'id');
+    }
 }

@@ -102,11 +102,10 @@ Route::group(['middleware' => ['auth:admin'], 'prefix' => 'admin', 'as' => 'admi
     Route::resource('course-levels', CourseLevelController::class);
     Route::resource('course-categories', CourseCategoryController::class);
 
-        /** Profile Update Routes */
-
-        Route::get('profile', [ProfileUpdateController::class, 'index'])->name('profile.index');
-        Route::post('profile', [ProfileUpdateController::class, 'profileUpdate'])->name('profile.update');
-        Route::post('update-password', [ProfileUpdateController::class, 'updatePassword'])->name('password.update');
+    /** Profile Update Routes */
+    Route::get('profile', [ProfileUpdateController::class, 'index'])->name('profile.index');
+    Route::post('profile', [ProfileUpdateController::class, 'profileUpdate'])->name('profile.update');
+    Route::post('update-password', [ProfileUpdateController::class, 'updatePassword'])->name('password.update');
 
     // Course Sub Category Routes
     Route::get('/{course_category}/sub-categories', [CourseSubCategoryController::class, 'index'])->name('course-sub-categories.index');
@@ -214,8 +213,6 @@ Route::group(['middleware' => ['auth:admin'], 'prefix' => 'admin', 'as' => 'admi
     /** Top bar routes */
     Route::resource('top-bar', TopBarController::class);
 
-
-
     /** Footer routes */
     Route::resource('footer', FooterController::class);
 
@@ -227,19 +224,18 @@ Route::group(['middleware' => ['auth:admin'], 'prefix' => 'admin', 'as' => 'admi
 
     // /** footer column one routes */
     Route::resource('footer-column-two', FooterColumnTwoController::class);
-       /** footer column one routes */
-       Route::resource('custom-page', CustomPageController::class);
+    /** footer column one routes */
+    Route::resource('custom-page', CustomPageController::class);
 
-           /** blog category routes */
+    /** blog category routes */
     Route::resource('blog-categories', BlogCategoryController::class);
 
     /** blog routes */
     Route::resource('blogs', BlogController::class);
 
-      /** Database Clear Routes */
-      Route::get('database-clear', [DatabaseClearController::class, 'index'])->name('database-clear.index');
-      Route::delete('database-clear', [DatabaseClearController::class, 'destroy'])->name('database-clear.destroy');
-
+    /** Database Clear Routes */
+    Route::get('database-clear', [DatabaseClearController::class, 'index'])->name('database-clear.index');
+    Route::delete('database-clear', [DatabaseClearController::class, 'destroy'])->name('database-clear.destroy');
 
     // laravel filemanger
     Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {

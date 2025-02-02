@@ -17,6 +17,7 @@ class ContactSettingController extends Controller
     public function index()
     {
         $contactSetting = ContactSetting::first();
+
         return view('admin.contact.contact-setting.index', compact('contactSetting'));
     }
 
@@ -33,9 +34,9 @@ class ContactSettingController extends Controller
      */
     public function store(Request $request)
     {
-       $validatedData =  $request->validate([
+        $validatedData = $request->validate([
             'image' => ['nullable', 'image', 'max:3000'],
-            'map_url' => ['nullable', 'url']
+            'map_url' => ['nullable', 'url'],
         ]);
 
         if ($request->hasFile('image')) {

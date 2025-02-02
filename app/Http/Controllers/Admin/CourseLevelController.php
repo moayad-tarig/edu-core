@@ -15,16 +15,17 @@ class CourseLevelController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() : View
+    public function index(): View
     {
         $levels = CourseLevel::paginate(15);
+
         return view('admin.course.course-level.index', compact('levels'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() : View
+    public function create(): View
     {
         return view('admin.course.course-level.create');
     }
@@ -32,11 +33,11 @@ class CourseLevelController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) : RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         $request->validate(['name' => ['required', 'max:255', 'unique:course_levels']]);
 
-        $level = new CourseLevel();
+        $level = new CourseLevel;
         $level->name = $request->name;
         $level->slug = Str::slug($request->name);
         $level->save();
@@ -85,9 +86,11 @@ class CourseLevelController extends Controller
         try {
             $course_level->delete();
             notyf()->success('Deleted Successfully!');
+
             return response(['message' => 'Deleted Successfully!'], 200);
-        }catch(Exception $e) {
-            logger("Course level Error >> ".$e);
+        } catch (Exception $e) {
+            logger('Course level Error >> '.$e);
+
             return response(['message' => 'Something went wrong!'], 500);
         }
     }

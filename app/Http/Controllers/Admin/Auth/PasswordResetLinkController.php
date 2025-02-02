@@ -34,14 +34,13 @@ class PasswordResetLinkController extends Controller
         // to send the link, we will examine the response then see the message we
         // need to show to the user. Finally, we'll send out a proper response.
         $status = Password::broker('admins')->sendResetLink(
-            $request->only('email')
-            , function($user , $token){
+            $request->only('email'), function ($user, $token) {
                 $notification = new ResetPassword($token);
                 $notification->createUrlUsing(
-                    function () use ($user ,$token) {
-                        return route('admin.password.reset' , ['token' => $token , 'email' => $user->email]); 
-                });
-                $user->notify($notification);   
+                    function () use ($user, $token) {
+                        return route('admin.password.reset', ['token' => $token, 'email' => $user->email]);
+                    });
+                $user->notify($notification);
 
             }
         );

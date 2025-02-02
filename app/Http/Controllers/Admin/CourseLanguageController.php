@@ -15,16 +15,17 @@ class CourseLanguageController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() : View
+    public function index(): View
     {
         $languages = CourseLanguage::paginate(15);
+
         return view('admin.course.course-language.index', compact('languages'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() : View
+    public function create(): View
     {
         return view('admin.course.course-language.create');
     }
@@ -32,11 +33,11 @@ class CourseLanguageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) : RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         $request->validate(['name' => ['required', 'max:255', 'unique:course_languages']]);
 
-        $language = new CourseLanguage();
+        $language = new CourseLanguage;
         $language->name = $request->name;
         $language->slug = Str::slug($request->name);
         $language->save();
@@ -85,9 +86,11 @@ class CourseLanguageController extends Controller
         try {
             $course_language->delete();
             notyf()->success('Deleted Successfully!');
+
             return response(['message' => 'Deleted Successfully!'], 200);
-        }catch(Exception $e) {
-            logger("Course Language Error >> ".$e);
+        } catch (Exception $e) {
+            logger('Course Language Error >> '.$e);
+
             return response(['message' => 'Something went wrong!'], 500);
         }
     }

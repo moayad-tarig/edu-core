@@ -10,17 +10,17 @@ use Illuminate\Http\Request;
 
 class BecomeInstructorSectionController extends Controller
 {
-
     use FileUpload;
+
     /**
      * Display a listing of the resource.
      */
-    public function index() : View
+    public function index(): View
     {
         $becomeInstructor = BecomeInstructorSection::first();
+
         return view('admin.sections.become-instructor.index', compact('becomeInstructor'));
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +35,7 @@ class BecomeInstructorSectionController extends Controller
             'image' => ['nullable', 'image', 'max:3000'],
         ]);
 
-        if($request->hasFile('image')) {
+        if ($request->hasFile('image')) {
             $image = $this->uploadFile($request->file('image'));
             $this->deleteFile($request->old_image);
             $validateData['image'] = $image;
@@ -44,6 +44,7 @@ class BecomeInstructorSectionController extends Controller
         BecomeInstructorSection::updateOrCreate(['id' => 1], $validateData);
 
         notyf()->success('Update Successfully!');
+
         return redirect()->back();
     }
 }

@@ -8,17 +8,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
-    
-
-
-
-    public function customer() : BelongsTo
+    public function customer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'buyer_id');
     }
 
-    public function orderItems() : HasMany
+    public function orderItems(): HasMany
     {
-        return $this->hasMany(OrderItem::class , 'order_id');
+        return $this->hasMany(OrderItem::class, 'order_id');
     }
 }

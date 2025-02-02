@@ -7,23 +7,23 @@ use App\Models\PayoutGateway;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use Stripe\Payout;
 
 class PayoutGatewayController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index() : View
+    public function index(): View
     {
         $gateways = PayoutGateway::all();
+
         return view('admin.payout-gateway.index', compact('gateways'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() : View
+    public function create(): View
     {
         return view('admin.payout-gateway.create');
     }
@@ -39,12 +39,12 @@ class PayoutGatewayController extends Controller
             'status' => 'required|boolean',
         ]);
 
-        $gateway = new PayoutGateway();
+        $gateway = new PayoutGateway;
         $gateway->name = $request->name;
         $gateway->description = $request->description;
         $gateway->status = $request->status;
         $gateway->save();
-        notyf()->success("Created Successfully!");
+        notyf()->success('Created Successfully!');
 
         return redirect()->route('admin.payout-gateway.index');
     }
@@ -55,7 +55,7 @@ class PayoutGatewayController extends Controller
     public function edit(PayoutGateway $payout_gateway)
     {
         return view('admin.payout-gateway.edit', compact('payout_gateway'));
-        
+
     }
 
     /**
@@ -74,7 +74,7 @@ class PayoutGatewayController extends Controller
         $payout_gateway->status = $request->status;
         $payout_gateway->save();
 
-        notyf()->success("Updated Successfully!");
+        notyf()->success('Updated Successfully!');
 
         return redirect()->route('admin.payout-gateway.index');
     }
@@ -87,9 +87,11 @@ class PayoutGatewayController extends Controller
         try {
             $payout_gateway->delete();
             notyf()->success('Deleted Successfully!');
+
             return response(['message' => 'Deleted Successfully!'], 200);
-        }catch(Exception $e) {
-            logger("Course Level Error >> ".$e);
+        } catch (Exception $e) {
+            logger('Course Level Error >> '.$e);
+
             return response(['message' => 'Something went wrong!'], 500);
         }
     }
