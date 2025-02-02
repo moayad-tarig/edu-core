@@ -6,6 +6,7 @@
 /storage/*.key
 /storage/pail
 /resources/views/edu-core-frontend
+/resources/views/template
 /vendor
 .env
 .env.backup
